@@ -1,0 +1,82 @@
+
+public class KnightsTour {
+	
+	static int N = 8;
+	
+	static boolean solveKT()
+	{
+		int[][] sol = new int[8][8];
+		
+		for(int i = 0; i < N; i++)
+			for(int j = 0; j < N; j++)
+				sol[i][j] = -1;
+		
+		int[] xm = {2, 1, -1, -2, -2, -1, 1, 2}; 
+		int[] ym = {1, 2, 2, 1, -1, -2, -2, -1};
+		
+		sol[0][0] = 0;
+		
+		if(solveKTUtil(0, 0, 1, sol, xm, ym) == false)
+			return false;
+		else
+			printSoln(sol);
+		
+		return true;
+		
+	}
+	
+
+	static boolean solveKTUtil(int x, int y, int move, int[][] sol, int[] xm, int[] ym)
+	{
+		int k, nextx, nexty;
+		
+		if(move == N * N)
+			return true;
+		
+		for(k = 0; k < 8; k++)
+		{
+			nextx = x + xm[k];
+			nexty = y + ym[k];
+			
+			if(isSafe(nextx, nexty, sol) == true)
+			{
+				sol[nextx][nexty] = move;
+				if(solveKTUtil(nextx, nexty, move+1, sol, xm, ym))
+					return true;
+				else
+					sol[nextx][nexty] = -1;
+							
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	static boolean isSafe(int x, int y, int[][] sol)
+	{
+		if(	x >= 0 && 
+			x < N &&
+			y >= 0 &&
+			y < N &&
+			sol[x][y] == -1)
+			return true;
+		
+		return false;
+		
+	}
+	
+	static void printSoln(int sol[][]) { 
+        for (int x = 0; x < N; x++) { 
+            for (int y = 0; y < N; y++) 
+                System.out.print(sol[x][y] + " "); 
+            System.out.println(); 
+        } 
+    } 
+	
+	
+	 public static void main(String args[]) { 
+	        solveKT(); 
+	    } 
+
+}
